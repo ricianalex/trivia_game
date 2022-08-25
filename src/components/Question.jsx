@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react"
 
 
-export default function Question({question, correct_answer, incorrect_answers, id, selectedAnswer, onAnswerClick, checkingAnswers}) {
+export default function Question({question, correct_answer, incorrect_answers, id, selectedAnswer, onAnswerClick, checkingAnswers, hasPickedAnswer}) {
     const allAnswers = [correct_answer, ...incorrect_answers]
-    const hasPickedAnswer = selectedAnswer !== ""
 
     function shuffle(array) {
         const shuffledArray = [...array]

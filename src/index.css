@@ -104,3 +104,9 @@ h2 {
   align-items: center;
   gap: 10px;
 }
+
+@media screen and (max-width: 500px) {
+  .question-container {
+    width: 95%;
+  }
+}

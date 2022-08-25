@@ -22,6 +22,7 @@ export default function App() {
         return {
           ...item,
           id: nanoid(),
+          hasPickedAnswer: false,
           selectedAnswer: "",
           checkingAnswers: false,
           question: he.decode(item.question),
@@ -43,6 +44,7 @@ export default function App() {
           incorrect_answers={element.incorrect_answers}
           selectedAnswer={element.selectedAnswer}
           id={element.id}
+          hasPickedAnswer={element.hasPickedAnswer}
           onAnswerClick={onAnswerClick}
           checkingAnswers={element.checkingAnswers}
         />
@@ -55,27 +57,35 @@ export default function App() {
     function onAnswerClick(event, id) {
       setQuiz(oldQuiz => oldQuiz.map(quizElement => {
         if(quizElement.id === id) {
-          return {...quizElement, selectedAnswer: event.target.innerText}
+          return {...quizElement, 
+            hasPickedAnswer: !quizElement.hasPickedAnswer, 
+            selectedAnswer: event.target.innerText
+          }
         } else { return quizElement}
       }))
-      quiz.forEach(element => {
-        if(element.selectedAnswer === element.correct_answer){ setAnsweredCorrectly(answeredCorrectly + 1)}
-      })
     }
 
     function checkAnswers() {
+      const allAnswered = quiz.every(element => element.hasPickedAnswer)
+      if(allAnswered) {
+      quiz.forEach(element => {
+        if(element.selectedAnswer === element.correct_answer){ 
+          setAnsweredCorrectly(count => count + 1)}
+      })
       setQuiz(oldQuiz => oldQuiz.map(quizElement => {
         return {
           ...quizElement,
           checkingAnswers: !quizElement.checkingAnswers
         }
       }))
-      setAllChecked(true)
+      setAllChecked(true)} else ( alert ("Make a choice for all questions"))
     }
 
     function onResetGame() {
       setResetGame(prevState => !prevState)
       setAllChecked(false)
+      setAnsweredCorrectly(0)
+      setStartGame(false)
     }
 
     const correctAnswers = <span>You scored {answeredCorrectly}/5 correct answers</span> 

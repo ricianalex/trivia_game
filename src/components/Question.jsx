@@ -19,8 +19,6 @@ export default function Question({question, correct_answer, incorrect_answers, i
 
     const [shuffledAnswers] = useState(() => shuffle(allAnswers))
 
-    
-
     return (
         <div className="question-container">
             <h2>{question}</h2>
@@ -33,9 +31,9 @@ export default function Question({question, correct_answer, incorrect_answers, i
                     if (checkingAnswers) {
                         if(correct_answer === answer){
                             className += " correct-answer"
-                        } else if(selectedAnswer !== correct_answer) {
-                            
-                        }
+                        } else if(selectedAnswer === answer && selectedAnswer !== correct_answer) {
+                            className += " selected-wrong-answer transparent-answer"
+                        } else { className += " transparent-answer"}
                     } 
                     return <button className={className} onClick={(event) => onAnswerClick(event, id, answer)}>{answer}</button>})}
             </div>

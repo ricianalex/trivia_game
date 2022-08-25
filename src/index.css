@@ -59,6 +59,14 @@
   border: none;
 }
 
+.selected-wrong-answer {
+  background-color: #F8BCBC;
+}
+
+.transparent-answer {
+  opacity: 0.5;
+}
+
 .correct-answer {
   background-color: #94D7A2;;
 }

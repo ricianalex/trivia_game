@@ -3,8 +3,7 @@ import { useState, useEffect } from "react"
 
 export default function Question({question, correct_answer, incorrect_answers, id, selectedAnswer, onAnswerClick, checkingAnswers}) {
     const allAnswers = [correct_answer, ...incorrect_answers]
-
-    console.log(question, correct_answer, incorrect_answers)
+    const hasPickedAnswer = selectedAnswer !== ""
 
     function shuffle(array) {
         const shuffledArray = [...array]
@@ -35,7 +34,7 @@ export default function Question({question, correct_answer, incorrect_answers, i
                             className += " selected-wrong-answer transparent-answer"
                         } else { className += " transparent-answer"}
                     } 
-                    return <button className={className} onClick={(event) => onAnswerClick(event, id, answer)}>{answer}</button>})}
+                    return <button className={className} onClick={(event) => onAnswerClick(event, id, answer)} disabled={hasPickedAnswer}>{answer}</button>})}
             </div>
         </div>
     )

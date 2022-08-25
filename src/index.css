@@ -3,7 +3,7 @@
   font-style: normal;
   max-width: 550px;
   min-height: 550px;
-  margin: 100px auto;
+  margin: 10px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,4 +97,10 @@ h2 {
   line-height: 37px;
   text-align: center;
   color: #293264;
+}
+
+.finished-game {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

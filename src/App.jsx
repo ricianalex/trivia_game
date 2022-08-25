@@ -6,11 +6,15 @@ import { nanoid } from 'nanoid'
 
 export default function App() {
   const [quiz, setQuiz] = useState()
+  const [allChecked, setAllChecked] = useState(false)
+  const [resetGame, setResetGame] = useState(false)
+  const [startGame, setStartGame] = useState(false)
+  const [answeredCorrectly, setAnsweredCorrectly] = useState(0)
 
   useEffect(() => {
     async function getQuiz() {
       console.log("Fetching!")
-      const url = "https://opentdb.com/api.php?amount=5&category=9&type=multiple"
+      const url = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple"
       const response = await fetch(url)
       const json = await response.json()
       const {results} = json
@@ -28,12 +32,12 @@ export default function App() {
       setQuiz(decodedResults)
     }
     getQuiz()
-  }, [])
+  }, [resetGame])
 
   function quizLive() { 
-    console.log(quiz)
     return quiz.map(element => {
         return <Question 
+          key={element.id}
           question={element.question}
           correct_answer={element.correct_answer}
           incorrect_answers={element.incorrect_answers}
@@ -44,12 +48,19 @@ export default function App() {
         />
       })}
 
+    function onStartGame() {
+      setStartGame(true)
+    }
+
     function onAnswerClick(event, id) {
       setQuiz(oldQuiz => oldQuiz.map(quizElement => {
         if(quizElement.id === id) {
           return {...quizElement, selectedAnswer: event.target.innerText}
         } else { return quizElement}
       }))
+      quiz.forEach(element => {
+        if(element.selectedAnswer === element.correct_answer){ setAnsweredCorrectly(answeredCorrectly + 1)}
+      })
     }
 
     function checkAnswers() {
@@ -59,12 +70,25 @@ export default function App() {
           checkingAnswers: !quizElement.checkingAnswers
         }
       }))
+      setAllChecked(true)
     }
+
+    function onResetGame() {
+      setResetGame(prevState => !prevState)
+      setAllChecked(false)
+    }
+
+    const correctAnswers = <span>You scored {answeredCorrectly}/5 correct answers</span> 
+
+    const gameRunning = allChecked ? <button className='check--button' onClick={onResetGame}>Reset Game</button> : <button className='check--button' onClick={checkAnswers}>Check Answers</button>
 
   return (
     <div className='container'>
-        {quiz ? quizLive() : <StartQuiz /> }
-        <button className='check--button' onClick={checkAnswers}>Check Answers</button>
+        {startGame ? quizLive() : <StartQuiz /> }
+        <div className='finished-game'>
+          {allChecked && correctAnswers}
+          {startGame ? gameRunning : <button className='check--button' onClick={onStartGame}>Start Game</button>}
+        </div>
     </div>
   )
 }

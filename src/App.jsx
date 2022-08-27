@@ -10,11 +10,24 @@ export default function App() {
   const [resetGame, setResetGame] = useState(false)
   const [startGame, setStartGame] = useState(false)
   const [answeredCorrectly, setAnsweredCorrectly] = useState(0)
+  const [category, setCategory] = useState("")
+  const [difficulty, setDifficulty] = useState("")
+
+  function updateCategory(event) {
+    const updatedCatefory = event.target.value
+    setCategory(updatedCatefory)
+    console.log(category)
+  }
+
+  function updateDifficulty(event) {
+    setDifficulty(event.target.value)
+    console.log(difficulty)
+  }
 
   useEffect(() => {
     async function getQuiz() {
       console.log("Fetching!")
-      const url = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple"
+      const url = `https://opentdb.com/api.php?amount=5&category=${category}&difficulty=${difficulty}&type=multiple`
       const response = await fetch(url)
       const json = await response.json()
       const {results} = json
@@ -33,7 +46,7 @@ export default function App() {
       setQuiz(decodedResults)
     }
     getQuiz()
-  }, [resetGame])
+  }, [resetGame, category, difficulty])
 
   function quizLive() { 
     return quiz.map(element => {
@@ -86,6 +99,8 @@ export default function App() {
       setAllChecked(false)
       setAnsweredCorrectly(0)
       setStartGame(false)
+      setCategory("")
+      setDifficulty("")
     }
 
     const correctAnswers = <span>You scored {answeredCorrectly}/5 correct answers</span> 
@@ -94,7 +109,7 @@ export default function App() {
 
   return (
     <div className='container'>
-        {startGame ? quizLive() : <StartQuiz /> }
+        {startGame ? quizLive() : <StartQuiz difficulty={difficulty} category={category} updateCategory={updateCategory} updateDifficulty={updateDifficulty}/> }
         <div className='finished-game'>
           {allChecked && correctAnswers}
           {startGame ? gameRunning : <button className='check--button' onClick={onStartGame}>Start Game</button>}

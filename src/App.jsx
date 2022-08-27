@@ -64,7 +64,9 @@ export default function App() {
       })}
 
     function onStartGame() {
+      if(category !== "" && difficulty !== "") {
       setStartGame(true)
+    } else { alert ("You have not chosen a category/difficulty level")}
     }
 
     function onAnswerClick(event, id) {

@@ -21,7 +21,7 @@ export default function StartQuiz({difficulty, category, updateCategory, updateD
             <select 
                     value={difficulty}
                     onChange={(event) => updateDifficulty(event)}
-                    className="difficulty"
+                    className="select--difficulty"
                 >
                     <option value="">difficulty level</option>
                     <option value="easy">easy</option>

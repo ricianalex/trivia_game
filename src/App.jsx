@@ -105,16 +105,16 @@ export default function App() {
       setDifficulty("")
     }
 
-    const correctAnswers = <span>You scored {answeredCorrectly}/5 correct answers</span> 
+    const correctAnswers = <span className='answered-correctly'>You scored {answeredCorrectly}/5 correct answers</span> 
 
-    const gameRunning = allChecked ? <button className='check--button' onClick={onResetGame}>Reset Game</button> : <button className='check--button' onClick={checkAnswers}>Check Answers</button>
+    const gameRunning = allChecked ? <button className='button button--reset' onClick={onResetGame}>Play again</button> : <button className='button' onClick={checkAnswers}>Check Answers</button>
 
   return (
     <div className='container'>
         {startGame ? quizLive() : <StartQuiz difficulty={difficulty} category={category} updateCategory={updateCategory} updateDifficulty={updateDifficulty}/> }
         <div className='finished-game'>
           {allChecked && correctAnswers}
-          {startGame ? gameRunning : <button className='check--button' onClick={onStartGame}>Start Game</button>}
+          {startGame ? gameRunning : <button className='button button--startgame' onClick={onStartGame}>Start Game</button>}
         </div>
     </div>
   )
